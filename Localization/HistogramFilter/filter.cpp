@@ -58,7 +58,7 @@ void Histogram::move(const vector<int>& d, cv::Mat& P)
         for (int j = 0; j < P.cols; j++)
         {
             //TODO: Do this a better way
-            P.at<float>(i, j) = pMove*auxP.at<float>(mod(i-d[0], m), mod(j-d[1], n)) + (1.0 - pMove)*auxP.at<float>(i, j);
+            P.at<float>(i, j) = pMove*auxP.at<float>(mod(i-d[1], m), mod(j-d[0], n)) + (1.0 - pMove)*auxP.at<float>(i, j);
         }
     }  
 }

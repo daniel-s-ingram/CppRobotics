@@ -1,10 +1,10 @@
 #include <iostream>
 #include "simulator.h"
 
-const int nrows = 1000;
-const int ncols = 1000;
+const int nrows = 500;
+const int ncols = 500;
 const float pSensor = 0.8;
-const float pMove = 0.7;
+const float pMove = 0.8;
 
 int main(int argc, char** argv)
 {

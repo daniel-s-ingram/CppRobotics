@@ -41,12 +41,13 @@ int Simulator::run()
         filter.move(d, pMap);
         cv::minMaxLoc(pMap, &minVal, &maxVal, &minLoc, &maxLoc);
         cv::cvtColor(1-pMap/maxVal, img, cv::COLOR_GRAY2BGR);
-        cv::circle(img, cv::Point(robot.y, robot.x), 1, cv::Scalar(0, 0, 255), -1);
-        std::cout << "Actual robot location:    [" << robot.y << ", " << robot.x << "]\n"
+        cv::circle(img, cv::Point(robot.x, robot.y), 1, cv::Scalar(0, 0, 255), -1);
+        std::cout << "Actual robot location:    [" << robot.x << ", " << robot.y << "]\n"
                      "Estimated robot location: " << maxLoc << std::endl;
         cv::imshow("Histogram Filter", img);
         if (cv::waitKey(1) == 27)
             break;
     }
+    cv::destroyAllWindows();
     return 0; 
 }
