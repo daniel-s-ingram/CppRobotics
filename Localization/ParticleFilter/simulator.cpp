@@ -43,6 +43,7 @@ void Simulator::drawScene(cv::Mat& canvas)
     for (auto& landmark : landmarks)
     {
         cv::circle(canvas, landmark, 5, cv::Scalar(0, 0, 255), -1);
+        cv::line(canvas, landmark, robot.pos, cv::Scalar(255, 0, 255), 1, CV_AA);
     }
 
     for (auto& particle : particles)
@@ -58,7 +59,7 @@ int Simulator::run()
     vector<float> weights(nParticles, 0);
     vector<float> Z(nLandmarks, 0);
     Robot p;
-    //cv::VideoWriter video("part.avi", CV_FOURCC('M','J','P','G'), 100, cv::Size(w, h));
+    cv::VideoWriter video("part.avi", CV_FOURCC('M','J','P','G'), 100, cv::Size(w, h));
     while (true)
     {
         turn = 2 * M_PI * (double)std::rand() / RAND_MAX;
@@ -83,11 +84,11 @@ int Simulator::run()
         filter.resample(weights, particles);
         drawScene(canvas);
         cv::imshow("Particle Filter", canvas);
-        //video.write(canvas);
+        video.write(canvas);
         if (cv::waitKey(1) == 27)
             break;
     }
-    //video.release();
+    video.release();
     cv::destroyAllWindows();
     return 0; 
 }
