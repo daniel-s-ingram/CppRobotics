@@ -1,12 +1,14 @@
 #include "filter.h"
 
-void ParticleFilter::resample(const vector<float>& weights, vector<Robot>& particles)
+int ParticleFilter::resample(const vector<float>& weights, vector<Robot>& particles)
 {
     vector<Robot> p = particles;
     particles.clear();
     int index = std::rand() % nParticles;
     float beta = 0;
-    float maxWeight = *std::max_element(weights.begin(), weights.end());
+    auto it = std::max_element(weights.begin(), weights.end());
+    int maxIndex = std::distance(weights.begin(), it);
+    float maxWeight = *it;
     for (int i = 0; i < nParticles; i++)
     {
         beta += 2 * maxWeight * (double)std::rand() / RAND_MAX;
@@ -17,4 +19,5 @@ void ParticleFilter::resample(const vector<float>& weights, vector<Robot>& parti
         }
         particles.push_back(p[index]);
     }
+    return maxIndex;
 }
