@@ -39,7 +39,7 @@ void Simulator::initParticles()
 void Simulator::drawScene(cv::Mat& canvas)
 {
     canvas.setTo(cv::Scalar(255, 255, 255));
-    cv::circle(canvas, robot.pos, 10, cv::Scalar(0, 255, 0), -1);
+    cv::circle(canvas, robot.pos, 10, cv::Scalar(0, 0, 0), -1);
     for (auto& landmark : landmarks)
     {
         cv::circle(canvas, landmark, 5, cv::Scalar(0, 0, 255), -1);
@@ -48,18 +48,20 @@ void Simulator::drawScene(cv::Mat& canvas)
 
     for (auto& particle : particles)
     {
-        cv::circle(canvas, particle.pos, 1, cv::Scalar(255, 0, 0), -1);
+        cv::Scalar color = cv::Scalar(std::rand() % 255, std::rand() % 255, std::rand() % 255);
+        cv::circle(canvas, particle.pos, 1, color, -1);
     }
 }
 
 int Simulator::run()
 {
+    int maxIndex;
     float turn, forward, norm;
     cv::Mat canvas(h, w, CV_8UC3);
     vector<float> weights(nParticles, 0);
     vector<float> Z(nLandmarks, 0);
     Robot p;
-    cv::VideoWriter video("part.avi", CV_FOURCC('M','J','P','G'), 100, cv::Size(w, h));
+    //cv::VideoWriter video("part.mp4", CV_FOURCC('F','M','P','4'), 100, cv::Size(w, h));
     while (true)
     {
         turn = 2 * M_PI * (double)std::rand() / RAND_MAX;
@@ -81,14 +83,16 @@ int Simulator::run()
         {
             weight /= norm;
         }
-        filter.resample(weights, particles);
+        maxIndex = filter.resample(weights, particles);
+        std::cout << "Actual robot position:    [" << robot.pos.x << ", " << robot.pos.y << "]\n"
+                     "Estimated robot position: " << particles[maxIndex] << std::endl;
         drawScene(canvas);
         cv::imshow("Particle Filter", canvas);
-        video.write(canvas);
+        //video.write(canvas);
         if (cv::waitKey(1) == 27)
             break;
     }
-    video.release();
+    //video.release();
     cv::destroyAllWindows();
     return 0; 
 }

@@ -66,7 +66,7 @@ float Robot::Gaussian(float mean, float var, float x)
 
 std::ostream& operator<<(std::ostream& os, const Robot& robot)
 {
-    return os << robot.pos << " " << robot.yaw;
+    return os << robot.pos;
 }
 
 std::ostream& operator<<(std::ostream& os, const vector<Robot>& robots)
