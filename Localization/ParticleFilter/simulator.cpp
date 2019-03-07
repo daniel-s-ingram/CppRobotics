@@ -55,8 +55,6 @@ void Simulator::drawScene(cv::Mat& canvas)
 
 int Simulator::run()
 {
-    int maxIndex;
-    float turn, forward, norm;
     cv::Mat canvas(h, w, CV_8UC3);
     vector<float> weights(nParticles, 0);
     vector<float> Z(nLandmarks, 0);
@@ -64,17 +62,20 @@ int Simulator::run()
     //cv::VideoWriter video("part.mp4", CV_FOURCC('F','M','P','4'), 100, cv::Size(w, h));
     while (true)
     {
-        turn = 2 * M_PI * (double)std::rand() / RAND_MAX;
-        forward = 0.5;
+        float turn = 2 * M_PI * (double)std::rand() / RAND_MAX;
+        float forward = 0.5;
+        
         robot.move(turn, forward);
         robot.sense(landmarks, Z);
+        
         for (int i = 0; i < nParticles; i++)
         {
             p = particles[i].move(turn, forward);
             particles[i] = p;
             weights[i] = p.measProb(landmarks, Z);
         }
-        norm = 0.0;
+        
+        float norm = 0.0;
         for (const auto& weight : weights)
         {
             norm += weight;
@@ -83,9 +84,12 @@ int Simulator::run()
         {
             weight /= norm;
         }
-        maxIndex = filter.resample(weights, particles);
+        
+        int maxIndex = filter.resample(weights, particles);
+        
         std::cout << "Actual robot position:    [" << robot.pos.x << ", " << robot.pos.y << "]\n"
                      "Estimated robot position: " << particles[maxIndex] << std::endl;
+        
         drawScene(canvas);
         cv::imshow("Particle Filter", canvas);
         //video.write(canvas);

@@ -11,15 +11,12 @@ Robot Robot::move(float turn, float forward)
     std::normal_distribution<float> tGauss(turn, tNoise);
     std::normal_distribution<float> fGauss(forward, fNoise);
 
-    float omega = tGauss(gen);
-    yaw += omega;
+    yaw += tGauss(gen);
     yaw = std::fmod(yaw, 2 * M_PI);
 
     float d = fGauss(gen);
-    float dx = d * std::cos(yaw);
-    float dy = d * std::sin(yaw);
-    pos.x += dx;
-    pos.y += dy;
+    pos.x += d * std::cos(yaw);
+    pos.y += d * std::sin(yaw);
 
     Robot p = Robot(pos, yaw, fNoise, tNoise, sNoise);
     return p;

@@ -4,10 +4,10 @@ int ParticleFilter::resample(const vector<float>& weights, vector<Robot>& partic
 {
     vector<Robot> p = particles;
     particles.clear();
-    int index = std::rand() % nParticles;
-    float beta = 0;
     auto it = std::max_element(weights.begin(), weights.end());
     int maxIndex = std::distance(weights.begin(), it);
+    int index = std::rand() % nParticles;
+    float beta = 0;
     float maxWeight = *it;
     for (int i = 0; i < nParticles; i++)
     {
