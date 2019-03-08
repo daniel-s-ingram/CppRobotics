@@ -27,16 +27,19 @@ Kalman::Kalman(float initX, float initY, float dt, const vector<float>& stateVar
                    0, stateVar[1],           0,           0,
                    0,           0, stateVar[2],           0,
                    0,           0,           0, stateVar[3];
+}
 
-    //State estimate
-    x << initX,
-         initY,
-             0,
-             0;
+void Kalman::predict(const Eigen::Vector4f& u, Eigen::Vector4f& x)
+{
+    x = F * x + u;
+    P = F * P * F.transpose();
+}
 
-    //Control inputs
-    u << 0,
-         0,
-         0,
-         0;
+void Kalman::update(const Eigen::RowVector2f& Z, Eigen::Vector4f& x)
+{
+    y = Z.transpose() - H * x;
+    S = H * P * H.transpose() + R;
+    K = P * H.transpose() * S.inverse();
+    x = x + K * y;
+    P = (I - K * H) * P;
 }
