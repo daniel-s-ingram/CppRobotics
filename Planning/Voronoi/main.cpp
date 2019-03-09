@@ -21,6 +21,5 @@ int main(int argc, char** argv)
         segments.begin(),
         segments.end(),
         &vd);
-    std::cout << vd << std::endl;
     return 0;
 }
