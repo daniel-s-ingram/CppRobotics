@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
     std::string window_name = "Lane Detector";
-    cv::VideoCapture video("../lane.mp4");
+    cv::VideoCapture video("../videos/lane.mp4");
     cv::namedWindow(window_name, cv::WINDOW_NORMAL);
 
     int height = video.get(CV_CAP_PROP_FRAME_HEIGHT);
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
         /*double end = static_cast<double>(cv::getTickCount());
         double fps = cv::getTickFrequency() / (end - begin);
         std::cout << fps << std::endl;*/
-        cv::imshow(window_name, frame);
+
         if (cv::waitKey(10) == 27)
             break;
     }

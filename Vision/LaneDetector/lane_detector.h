@@ -8,10 +8,12 @@ class LaneDetector
         void detect(cv::Mat& frame);
 
     private:
-        void init_roi_mask(int height, int width);
+        void init_roi_mask();
+        void init_perspective_transform();
 
-        cv::Mat gray, blurred, edges, corners, mask;
+        cv::Mat gray, blurred, edges, corners, mask, transform, inverse_transform, warped;
         std::vector<std::vector<cv::Point> > contours;
         std::vector<cv::Vec2f> hough_lines;
         std::vector<cv::Vec4i> p_hough_lines;
+        int height, width;
 };
